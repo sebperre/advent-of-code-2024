@@ -1,5 +1,3 @@
-import re
-
 f = open("input.txt")
 
 rules = []
