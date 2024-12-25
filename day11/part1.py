@@ -4,7 +4,7 @@ res = ""
 
 res = f.readline().split(" ")
 
-blinks = 75
+blinks = 25
 
 memo = {}
 
