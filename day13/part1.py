@@ -1,6 +1,6 @@
 import re
 
-f = open("input.txt")
+f = open("testinput.txt")
 
 problems = []
 
@@ -35,7 +35,7 @@ def dfs(x, y):
 
 ans = 0
 
-for problem in problems:
+for i, problem in enumerate(problems):
     memo = {}
     button_a = (int(problem[0][0]), int(problem[0][1]))
     button_b = (int(problem[1][0]), int(problem[1][1]))
@@ -46,5 +46,6 @@ for problem in problems:
     if res == float("inf"):
         continue
     ans += res
+    print(f"Completed {i} out of {len(problems)}")
 
 print(ans)
