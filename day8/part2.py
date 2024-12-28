@@ -19,17 +19,21 @@ for i in range(row_length):
 
 ans = 0
 
+max_len = max(len(matrix), len(matrix[0]))
+
 for value in antennas.values():
     for i in range(len(value)):
         for j in range(i + 1, len(value)):
             row_diff, col_diff = value[j][0] - value[i][0], value[j][1] - value[i][1]
-            antinode_1 = (value[j][0] + row_diff, value[j][1] + col_diff)
-            antinode_2 = (value[i][0] - row_diff, value[i][1] - col_diff)
 
-            if 0 <= antinode_1[0] < row_length and 0 <= antinode_1[1] < col_length and matrix[antinode_1[0]][antinode_1[1]] != "#":
-                matrix[antinode_1[0]][antinode_1[1]] = "#"
-                ans += 1
-            if 0 <= antinode_2[0] < row_length and 0 <= antinode_2[1] < col_length and matrix[antinode_2[0]][antinode_2[1]] != "#":
-                matrix[antinode_2[0]][antinode_2[1]] = "#"
-                ans += 1
+            for k in range(max_len + 1):
+                antinode_pos = (value[j][0] + k * row_diff, value[j][1] + k * col_diff)
+                antinode_neg = (value[j][0] - k * row_diff, value[j][1] - k * col_diff)
+
+                if 0 <= antinode_pos[0] < row_length and 0 <= antinode_pos[1] < col_length and matrix[antinode_pos[0]][antinode_pos[1]] != "#":
+                    matrix[antinode_pos[0]][antinode_pos[1]] = "#"
+                    ans += 1
+                if 0 <= antinode_neg[0] < row_length and 0 <= antinode_neg[1] < col_length and matrix[antinode_neg[0]][antinode_neg[1]] != "#":
+                    matrix[antinode_neg[0]][antinode_neg[1]] = "#"
+                    ans += 1
 print(ans)
