@@ -1,4 +1,4 @@
-f = open("input.txt")
+f = open("testinput3.txt")
 
 content = f.readlines()
 
@@ -12,6 +12,10 @@ op_to_ins = {0: "adv", 1: "bxl", 2: "bst", 3: "jnz", 4: "bxc", 5: "out", 6: "bdv
 combo = ["adv", "bst", "out", "bdv", "cdv"]
 
 output = []
+
+i = 0
+while i < len(operations):
+    i += 2
 
 def get_combo_op(operand):
     if operand <= 3:
