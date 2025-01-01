@@ -1,4 +1,4 @@
-f = open("testinput.txt")
+f = open("input.txt")
 
 question = f.readline()
 
@@ -12,21 +12,50 @@ for i, c in enumerate(question):
 
 print(filesystem)
 
-l, r = 0, len(filesystem) - 1
+r = len(filesystem) - 1
 
-while l <= r:
-    if filesystem[l] == "." and filesystem[r] != ".":
-        filesystem[l], filesystem[r] = filesystem[r], filesystem[l]
-    elif filesystem[l] != ".":
-        l += 1
-    elif filesystem[r] == ".":
+
+while r >= 0:
+    if filesystem[r] == ".":
         r -= 1
+    else:
+        num_transfer = filesystem[r]
+        count = 0
+        while r >= 0 and filesystem[r] == num_transfer:
+            count += 1
+            r -= 1
+        l = 0
+        placed = False
+        while l <= r:
+            if filesystem[l] != ".":
+                l += 1
+            else:
+                start = l
+                places = 0
+                while filesystem[l] == ".":
+                    places += 1
+                    l += 1
+                if places >= count:
+                    placed = True
+                    end = r + 1
+                    while count > 0:
+                        filesystem[start] = num_transfer
+                        filesystem[end] = "."
+                        end += 1
+                        start += 1
+                        count -= 1
+                    break
+                if placed:
+                    break
+        
+
+print(filesystem)
 
 ans = 0
 
 for i in range(len(filesystem)):
     if filesystem[i] == ".":
-        break
+        continue
     ans += i * int(filesystem[i])
 
 print(ans)
