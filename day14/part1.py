@@ -5,7 +5,7 @@ f = open("input.txt")
 
 pattern = r"p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)"
 
-seconds = 100
+seconds = 6578
 
 width = 101
 height = 103
@@ -18,7 +18,7 @@ quadrants = [0, 0, 0, 0]
 
 for line in f:
     init_x, init_y, vel_x, vel_y = re.findall(pattern, line)[0]
-    ending_pos = ((int(init_x) + int(vel_x) * 100) % width, (int(init_y) + int(vel_y) * 100) % height)
+    ending_pos = ((int(init_x) + int(vel_x) * seconds) % width, (int(init_y) + int(vel_y) * seconds) % height)
     # print(ending_pos)
     if ending_pos[0] < width // 2 and ending_pos[1] < height // 2:
         quadrants[0] += 1
