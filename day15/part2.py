@@ -37,6 +37,20 @@ for i in range(len(grid)):
         if grid[i][j] == "@":
             start_pos = (i, j)
 
+valid = True
+
+def dfs(i, j):
+    if not valid:
+        return
+    if grid[i][j] == "#":
+        valid = False
+        return
+    if grid[i][j] == "[":
+        dfs(i - 1, j)
+        dfs(i - 1, j)
+    elif grid
+    
+
 curr_pos = start_pos
 
 for action in actions:
@@ -46,9 +60,8 @@ for action in actions:
             grid[curr_pos[0]][curr_pos[1]] = "."
             grid[curr_pos[0] - 1][curr_pos[1]] = "@"
             curr_pos = (curr_pos[0] - 1, curr_pos[1])
-
         elif grid[curr_pos[0] - 1][curr_pos[1]] == "[":
-
+            
         elif grid[curr_pos[0] - 1][curr_pos[1]] == "]":
 
     elif action == "v":
