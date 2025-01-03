@@ -35,8 +35,6 @@ queue.append((start_pos, 0))
 
 min_steps = None
 
-blocks = [(6, 0), (5, 1), (4, 2), (3, 3), (2, 4), (1, 5), (1, 2), (0, 3), (6, 2), (5, 4), (4, 5), (3, 6)]
-
 while queue:
     node, steps = queue.popleft()
     grid[node[0]][node[1]] = "X"
