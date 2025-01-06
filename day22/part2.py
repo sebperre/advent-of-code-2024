@@ -1,5 +1,3 @@
-import threading
-
 f = open("testinput.txt")
 
 secret_numbers = []
@@ -28,15 +26,15 @@ for secret_number in secret_numbers:
     all_secret_numbers.append(all_secret_number)
     differences.append(difference)
 
+# print(all_secret_numbers)
+
 max_bananas = 0
 
-def find_banana_seq(i, j, k, l):
-    
 for i in range(-9, 10):
+    print(i)
     for j in range(-9, 10):
         for k in range(-9, 10):
             for l in range(-9, 10):
-                print(i, j, k, l)
                 curr_bananas = 0
                 for z, diff in enumerate(differences):
                     p = 0
