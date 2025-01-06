@@ -1,4 +1,5 @@
-f = open("testinput.txt")
+from collections import deque
+f = open("input.txt")
 
 lines = f.readlines()
 
@@ -37,18 +38,98 @@ for i in range(len(grid)):
         if grid[i][j] == "@":
             start_pos = (i, j)
 
-valid = True
-
 def check_up(i, j):
-    if not valid:
-        return
-    if grid[i][j] == "#":
-        valid = False
-        return
-    if grid[i][j] == "[":
-        check_up(i - 1, j) and check_up(i - 1, j + 1)
-    elif grid[i][j] == "]":
+    queue = deque()
+    queue.append((i, j))
     
+    visited = set()
+
+    while queue:
+        row, col = queue.pop()
+
+        if (row - 1, col) not in visited:
+            if grid[row - 1][col] == "[":
+                visited.add((row - 1, col))
+                visited.add((row - 1, col + 1))
+                queue.append((row - 1, col))
+                queue.append((row - 1, col + 1))
+            elif grid[row - 1][col] == "]":
+                visited.add((row - 1, col))
+                visited.add((row - 1, col - 1))
+                queue.append((row - 1, col))
+                queue.append((row - 1, col - 1))
+            elif grid[row - 1][col] == "#":
+                return False
+    return True
+
+def move_up(row, col):
+    def dfs(row, col):
+        if grid[row - 1][col] == "[":
+            dfs(row - 1, col)
+        else:
+            if grid[row - 1][col - 1] == "[":
+                dfs(row - 1, col - 1)
+            if grid[row - 1][col + 1] == "[":
+                dfs(row - 1, col + 1)
+
+        grid[row - 1][col] = "["
+        grid[row - 1][col + 1] = "]"
+        grid[row][col] = "."
+        grid[row][col + 1] = "."
+
+    if grid[row - 1][col] == "[":
+        dfs(row - 1, col)
+    elif grid[row - 1][col] == "]":
+        dfs(row - 1, col - 1)
+    grid[row][col] = "."
+    grid[row - 1][col] = "@"
+
+def check_down(i, j):
+    queue = deque()
+    queue.append((i, j))
+    
+    visited = set()
+
+    while queue:
+        row, col = queue.pop()
+
+        if (row + 1, col) not in visited:
+            if grid[row + 1][col] == "[":
+                visited.add((row + 1, col))
+                visited.add((row + 1, col + 1))
+                queue.append((row + 1, col))
+                queue.append((row + 1, col + 1))
+            elif grid[row + 1][col] == "]":
+                visited.add((row + 1, col))
+                visited.add((row + 1, col - 1))
+                queue.append((row + 1, col))
+                queue.append((row + 1, col - 1))
+            elif grid[row + 1][col] == "#":
+                return False
+    return True
+
+def move_down(row, col):
+    def dfs(row, col):
+        if grid[row + 1][col] == "[":
+            dfs(row + 1, col)
+        else:
+            if grid[row + 1][col - 1] == "[":
+                dfs(row + 1, col - 1)
+            if grid[row + 1][col + 1] == "[":
+                dfs(row + 1, col + 1)
+
+        grid[row + 1][col] = "["
+        grid[row + 1][col + 1] = "]"
+        grid[row][col] = "."
+        grid[row][col + 1] = "."
+    
+    if grid[row + 1][col] == "[":
+        dfs(row + 1, col)
+    elif grid[row + 1][col] == "]":
+        dfs(row + 1, col - 1)
+
+    grid[row][col] = "."
+    grid[row + 1][col] = "@"
 
 curr_pos = start_pos
 
@@ -59,20 +140,21 @@ for action in actions:
             grid[curr_pos[0]][curr_pos[1]] = "."
             grid[curr_pos[0] - 1][curr_pos[1]] = "@"
             curr_pos = (curr_pos[0] - 1, curr_pos[1])
-        elif grid[curr_pos[0] - 1][curr_pos[1]] == "[":
-            
-        elif grid[curr_pos[0] - 1][curr_pos[1]] == "]":
+        elif grid[curr_pos[0] - 1][curr_pos[1]] in ["[", "]"]:
+            if check_up(curr_pos[0], curr_pos[1]):
+                move_up(curr_pos[0], curr_pos[1])
+                curr_pos = (curr_pos[0] - 1, curr_pos[1])
 
     elif action == "v":
         if grid[curr_pos[0] + 1][curr_pos[1]] == ".":
             grid[curr_pos[0]][curr_pos[1]] = "."
             grid[curr_pos[0] + 1][curr_pos[1]] = "@"
             curr_pos = (curr_pos[0] + 1, curr_pos[1])
+        elif grid[curr_pos[0] + 1][curr_pos[1]] in ["[", "]"]:
+            if check_down(curr_pos[0], curr_pos[1]):
+                move_down(curr_pos[0], curr_pos[1])
+                curr_pos = (curr_pos[0] + 1, curr_pos[1])
 
-        elif grid[curr_pos[0] + 1][curr_pos[1]] == "[":
-
-        elif grid[curr_pos[0] - 1][curr_pos[1]] == "]":
-                
     # Left, Right
     elif action == ">":
         if grid[curr_pos[0]][curr_pos[1] + 1] == ".":
@@ -87,6 +169,7 @@ for action in actions:
                 i += 2
             if grid[curr_pos[0]][curr_pos[1] + i] == ".":
                 j = 1
+                grid[curr_pos[0]][curr_pos[1]] = "."
                 grid[curr_pos[0]][curr_pos[1] + j] = "@"
                 j += 1
                 while j < i:
@@ -110,6 +193,7 @@ for action in actions:
                 i += 2
             if grid[curr_pos[0]][curr_pos[1] - i] == ".":
                 j = 1
+                grid[curr_pos[0]][curr_pos[1]] = "."
                 grid[curr_pos[0]][curr_pos[1] - j] = "@"
                 j += 1
                 while j < i:
