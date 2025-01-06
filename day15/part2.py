@@ -39,16 +39,15 @@ for i in range(len(grid)):
 
 valid = True
 
-def dfs(i, j):
+def check_up(i, j):
     if not valid:
         return
     if grid[i][j] == "#":
         valid = False
         return
     if grid[i][j] == "[":
-        dfs(i - 1, j)
-        dfs(i - 1, j)
-    elif grid
+        check_up(i - 1, j) and check_up(i - 1, j + 1)
+    elif grid[i][j] == "]":
     
 
 curr_pos = start_pos
