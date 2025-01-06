@@ -109,6 +109,7 @@ def process_code(code):
     code = "A" + code
 
     numpad_to_arrowpad1 = ["A" + pos for pos in process_numpad(code)]
+    print(numpad_to_arrowpad1)
 
     arrowpad1_to_arrowpad2 = ["A" + pos for pos in process_dirpad(numpad_to_arrowpad1)]
 

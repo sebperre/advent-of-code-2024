@@ -49,43 +49,50 @@ def create_dict_arrowpad():
 
 create_dict_arrowpad()
 
-dict_dirs_arrowpad = {('^', '^'): ['A'], ('^', '>'): ['v>A'], ('^', '<'): ['v<A'], ('^', 'v'): ['vA'], ('^', 'A'): ['>A'], ('>', '^'): ['<^A'], ('>', '>'): ['A'], ('>', '<'): ['<<A'], ('>', 'v'): ['<A'], ('>', 'A'): ['^A'], ('<', '^'): ['>^A'], ('<', '>'): ['>>A'], ('<', '<'): ['A'], ('<', 'v'): ['>A'], ('<', 'A'): ['>>^A'], ('v', '^'): ['^A'], ('v', '>'): ['>A'], ('v', '<'): ['<A'], ('v', 'v'): ['A'], ('v', 'A'): ['>^A'], ('A', '^'): ['<A'], ('A', '>'): ['vA'], ('A', '<'): ['v<<A'], ('A', 'v'): ['<vA'], ('A', 'A'): ['A']}
+dict_dirs_arrowpad = {('^', '^'): 'A', ('^', '>'): 'v>A', ('^', '<'): 'v<A', ('^', 'v'): 'vA', ('^', 'A'): '>A', ('>', '^'): '<^A', ('>', '>'): 'A', ('>', '<'): '<<A', ('>', 'v'): '<A', ('>', 'A'): '^A', ('<', '^'): '>^A', ('<', '>'): '>>A', ('<', '<'): 'A', ('<', 'v'): '>A', ('<', 'A'): '>>^A', ('v', '^'): '^A', ('v', '>'): '>A', ('v', '<'): '<A', ('v', 'v'): 'A', ('v', 'A'): '>^A', ('A', '^'): '<A', ('A', '>'): 'vA', ('A', '<'): 'v<<A', ('A', 'v'): '<vA', ('A', 'A'): 'A'}
 
 def process_dirpad(codes):
-    results = []
-    shortest = None
+    shortest = []
 
-    def dfs_dirpad(i, curr, code, ans):
-        nonlocal shortest
-        if shortest and len(curr) > shortest:
-            return
-        if i == len(code):
-            if not shortest:
-                shortest = len(curr)
-                ans.append(curr)
-            elif len(curr) < shortest:
-                shortest = len(curr)
-                ans.clear()
-                ans.append(curr)
-            elif len(curr) == shortest:
-                ans.append(curr)
-            return
-        for seq in dict_dirs_arrowpad[(code[i - 1], code[i])]:
-            dfs_dirpad(i + 1, curr + seq, code, ans)
     for code in codes:
-        dfs_dirpad(1, "", code, results)
-    return results
+        res = ""
+        for i in range(1, len(code)):
+            res += dict_dirs_arrowpad[(code[i - 1], code[i])]
+        if not shortest or len(res) < len(shortest[0]):
+            shortest = [res]
+        else:
+            shortest.append(res)
+    
+    return shortest
+
+# def process_dirpad(codes):
+#     results = []
+#     shortest = None
+
+#     def dfs_dirpad(i, curr, code, ans):
+#         nonlocal shortest
+#         if shortest and len(curr) > shortest:
+#             return
+#         if i == len(code):
+#             if not shortest:
+#                 shortest = len(curr)
+#                 ans.append(curr)
+#             elif len(curr) < shortest:
+#                 shortest = len(curr)
+#                 ans.clear()
+#                 ans.append(curr)
+#             elif len(curr) == shortest:
+#                 ans.append(curr)
+#             return
+#         for seq in dict_dirs_arrowpad[(code[i - 1], code[i])]:
+#             dfs_dirpad(i + 1, curr + seq, code, ans)
+#     for code in codes:
+#         dfs_dirpad(1, "", code, results)
+#     return results
 
 def process_code(code):
-    code = ["A" + code]
-
-    for i in range(25):
-        print(i)
-        print(code)
-        code = ["A" + pos for pos in process_dirpad(code)]
-       
-    print(code)
+    
     print(len(code[0]))
 
 
-process_code("^")
+process_code("^A")
