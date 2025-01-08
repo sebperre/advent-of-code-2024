@@ -29,13 +29,10 @@ grid[end[0]][end[1]] = "."
 directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 dir_vis = [">", "v", "<", "^"]
 
-on_shortest_path = set()
-
-def dijkstra(start, end):
+def dijkstra(start, end, start_dir):
     queue = []
-    res = 0
 
-    heapq.heappush(queue, (0, start, 0, ""))
+    heapq.heappush(queue, (0, start, start_dir, ""))
 
     visited = set()
     visited.add(start)
@@ -43,8 +40,7 @@ def dijkstra(start, end):
     while queue:
         cost, location, direction, seq = heapq.heappop(queue)
         if location == end:
-            res = cost
-            break
+            return (cost, direction, seq)
         
         dir_cc = (direction + 1) % 4
         spot_cc = (location[0] + directions[dir_cc][0], location[1] + directions[dir_cc][1])
@@ -63,8 +59,42 @@ def dijkstra(start, end):
             visited.add(spot_str)
             heapq.heappush(queue, (1 + cost, spot_str, direction, seq + dir_vis[direction]))
 
-    return res
+def trace(start, seq, vis):
+    curr = start
+    vis.add(curr)
 
-min_cost = dijkstra(start, end)
-print(min_cost)
+    for c in seq:
+        if c == ">":
+            curr = (curr[0], curr[1] + 1)
+        elif c == "<":
+            curr = (curr[0], curr[1] - 1)
+        elif c == "^":
+            curr = (curr[0] - 1, curr[1])
+        else:
+            curr = (curr[0] + 1, curr[1])
+        vis.add(curr)
+
+overall_visited = set()
+
+result = dijkstra(start, end, 0)
+trace(start, result[2], overall_visited)
+best_score = result[0]
+
+for i in range(len(grid)):
+    print(i)
+    for j in range(len(grid[0])):
+        if grid[i][j] == "#" or (i, j) in overall_visited:
+            continue
+        result = dijkstra(start, (i, j), 0)
+        result2 = dijkstra((i, j), end, result[1])
+        if result2 is None:
+            continue
+        if result[0] + result2[0] == best_score:
+            trace(start, result[2] + result2[2], overall_visited)
+
+print(len(overall_visited))
+
+
+
+
 

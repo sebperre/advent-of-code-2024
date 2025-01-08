@@ -1,6 +1,6 @@
 import heapq
 
-f = open("input.txt")
+f = open("testinput2.txt")
 
 grid = []
 for line in f:
