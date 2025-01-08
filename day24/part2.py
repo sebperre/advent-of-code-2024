@@ -93,6 +93,7 @@ while True:
         else:
             break
     i += 1
+    
 print("\n\n")
 print(res)
 print(int(res, 2))
