@@ -2,6 +2,8 @@
 
 Welcome to my journey of solving the **Advent of Code 2024** using Python! This annual coding challenge was an excellent way to sharpen my programming skills, explore creative problem-solving, and enjoy the festive season with a global community of developers.
 
+![image](https://github.com/user-attachments/assets/7af79427-750a-4237-a3fb-bd4b72ece862)
+
 ## Why Advent of Code?
 
 Advent of Code provides a unique opportunity to:
